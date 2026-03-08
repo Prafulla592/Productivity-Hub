@@ -1,0 +1,284 @@
+You are an expert full-stack developer. Build a production-ready MVP web application called **CareerCompass AI**.
+
+The application helps students discover the best career path using AI analysis of their interests, skills, and market trends.
+
+The goal is to guide students toward careers with strong demand and good salary prospects.
+
+---
+
+PRODUCT OVERVIEW
+
+CareerCompass AI is an AI-powered career guidance platform that helps students:
+
+• Discover suitable career paths
+• Understand salary expectations
+• Learn required skills
+• Identify skill gaps
+• Generate a step-by-step learning roadmap
+
+Target users:
+• High school students
+• college students
+• fresh graduates
+
+---
+
+TECH STACK
+
+Frontend:
+Next.js (React)
+TailwindCSS
+Responsive design
+
+Backend:
+Node.js with Express
+
+Database:
+PostgreSQL
+
+Authentication:
+JWT-based authentication
+
+AI Integration:
+Use OpenAI API for generating career recommendations and learning roadmaps.
+
+---
+
+CORE FEATURES (MVP)
+
+1. USER AUTHENTICATION
+
+Create a signup/login system.
+
+Fields:
+• name
+• email
+• password
+• education_level
+• college (optional)
+• city (optional)
+
+Users should be able to register, login, and access their dashboard.
+
+---
+
+2. CAREER INTEREST ASSESSMENT
+
+Create a questionnaire with around 20 questions.
+
+Example categories:
+• interests
+• preferred work type
+• favorite subjects
+• personality traits
+• analytical vs creative thinking
+
+Example question:
+"Which activity do you enjoy most?"
+
+Options:
+• solving data problems
+• designing visuals
+• writing content
+• managing teams
+
+Store all answers in the database.
+
+---
+
+3. CAREER RECOMMENDATION ENGINE
+
+After completing the assessment, the system should generate the **Top 5 recommended careers**.
+
+Example output:
+
+1. Data Analyst
+2. Product Manager
+3. Software Engineer
+4. UX Designer
+5. Business Analyst
+
+Use OpenAI API to generate the recommendation based on the answers.
+
+---
+
+4. CAREER DETAILS PAGE
+
+Each career should have a detailed information page containing:
+
+Career name
+Description
+Average salary range
+Market demand level (Low / Medium / High)
+Required skills
+Typical responsibilities
+Example companies hiring
+
+Example structure:
+
+Career: Data Analyst
+
+Average Salary:
+₹6L – ₹15L per year
+
+Skills Needed:
+• SQL
+• Python
+• Excel
+• Power BI
+
+Demand:
+High
+
+---
+
+5. SKILL GAP ANALYSIS
+
+Allow users to input their existing skills.
+
+Example:
+
+User skills:
+Excel
+SQL
+
+Target career:
+Data Analyst
+
+System should show:
+
+Skills you have:
+Excel
+SQL
+
+Skills you need:
+Python
+Statistics
+Power BI
+
+---
+
+6. AI LEARNING ROADMAP
+
+Generate a personalized roadmap for reaching a chosen career.
+
+Example:
+
+Goal: Become Data Analyst
+
+Step 1: Learn Excel basics
+Step 2: Learn SQL queries
+Step 3: Learn Python for data analysis
+Step 4: Build portfolio projects
+Step 5: Apply for internships
+
+This roadmap should be generated using OpenAI.
+
+---
+
+7. USER DASHBOARD
+
+After login, the dashboard should show:
+
+• career assessment results
+• recommended careers
+• selected career path
+• skills needed
+• progress tracker
+
+---
+
+DATABASE SCHEMA
+
+Users table:
+id
+name
+email
+password
+education_level
+college
+city
+created_at
+
+Assessments table:
+id
+user_id
+question
+answer
+
+Careers table:
+id
+career_name
+description
+salary_range
+market_demand
+skills_required
+
+UserSkills table:
+id
+user_id
+skill_name
+
+---
+
+API ENDPOINTS
+
+POST /signup
+POST /login
+GET /dashboard
+POST /assessment
+GET /career-recommendations
+GET /career/:id
+POST /skill-gap-analysis
+POST /generate-roadmap
+
+---
+
+UI PAGES
+
+Landing Page
+Signup Page
+Login Page
+Assessment Page
+Career Recommendations Page
+Career Detail Page
+User Dashboard
+
+---
+
+UI DESIGN
+
+Use a modern clean UI with:
+
+• Tailwind CSS
+• responsive design
+• card-based layout
+• simple navigation menu
+
+---
+
+FUTURE FEATURES (Design architecture so they can be added later)
+
+• skill badges
+• leaderboard ranking by college/city
+• AI career mentor chatbot
+• job readiness score
+• internship matching
+
+---
+
+PROJECT OUTPUT
+
+Generate a complete working project including:
+
+• frontend
+• backend
+• database schema
+• API routes
+• environment variables
+• setup instructions
+
+The app should run locally using:
+
+npm install
+npm run dev
