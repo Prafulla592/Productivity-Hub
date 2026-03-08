@@ -6,6 +6,7 @@ import { api } from "@shared/routes";
 import { z } from "zod";
 import { openai } from "./openai";
 import { insertRecommendationSchema } from "@shared/schema";
+import { enrichRecommendationWithMarketData, getJobMarketData } from "./jobMarketService";
 
 export async function registerRoutes(
   httpServer: Server,
@@ -101,7 +102,9 @@ export async function registerRoutes(
   app.get(api.recommendations.get.path, async (req, res) => {
     if (!req.isAuthenticated()) return res.status(401).json({ message: "Not authenticated" });
     const recs = await storage.getRecommendations(req.user!.id);
-    res.json(recs);
+    // Enrich with market data
+    const enriched = await Promise.all(recs.map(enrichRecommendationWithMarketData));
+    res.json(enriched);
   });
 
   app.get(api.recommendations.getById.path, async (req, res) => {
@@ -111,7 +114,8 @@ export async function registerRoutes(
     if (!rec || rec.userId !== req.user!.id) {
       return res.status(404).json({ message: "Recommendation not found" });
     }
-    res.json(rec);
+    const enriched = await enrichRecommendationWithMarketData(rec);
+    res.json(enriched);
   });
 
   app.post(api.recommendations.generate.path, async (req, res) => {
@@ -165,7 +169,8 @@ export async function registerRoutes(
           exampleCompanies: rec.exampleCompanies || [],
           matchReason: rec.matchReason || "",
         });
-        savedRecs.push(saved);
+        const enriched = await enrichRecommendationWithMarketData(saved);
+        savedRecs.push(enriched);
       }
       
       res.json(savedRecs);
@@ -222,6 +227,18 @@ export async function registerRoutes(
     } catch (err) {
       if (err instanceof z.ZodError) return res.status(400).json({ message: err.errors[0].message });
       res.status(500).json({ message: "Internal server error" });
+    }
+  });
+
+  // Job Market Data route
+  app.get("/api/job-market/:careerName", async (req, res) => {
+    try {
+      const careerName = decodeURIComponent(req.params.careerName);
+      const marketData = await getJobMarketData(careerName);
+      res.json(marketData);
+    } catch (error) {
+      console.error("Error fetching job market data:", error);
+      res.status(500).json({ message: "Failed to fetch job market data" });
     }
   });
 

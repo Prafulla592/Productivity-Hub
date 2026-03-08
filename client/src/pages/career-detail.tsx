@@ -4,7 +4,7 @@ import { useGenerateRoadmap } from "@/hooks/use-roadmap";
 import { useSkills } from "@/hooks/use-skills";
 import { useParams, Link } from "wouter";
 import { motion, AnimatePresence } from "framer-motion";
-import { Briefcase, ArrowLeft, Target, Map, Building2, ListChecks, CheckCircle2, ChevronRight, Loader2, Sparkles } from "lucide-react";
+import { Briefcase, ArrowLeft, Target, Map, Building2, ListChecks, CheckCircle2, ChevronRight, Loader2, Sparkles, TrendingUp, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useState } from "react";
@@ -96,6 +96,35 @@ export default function CareerDetail() {
                 ))}
               </div>
             </div>
+
+            {rec.marketData && (
+              <div className="bg-gradient-to-br from-primary/5 to-accent/5 rounded-2xl border border-primary/20 p-6 shadow-md">
+                <h2 className="text-xl font-bold mb-4 flex items-center gap-2"><TrendingUp className="h-5 w-5 text-primary" /> Job Market Data</h2>
+                <div className="space-y-3">
+                  <div className="flex justify-between items-center bg-white/50 dark:bg-black/20 p-3 rounded-lg">
+                    <span className="text-sm font-medium text-muted-foreground">Open Positions</span>
+                    <span className="font-bold text-foreground">{rec.marketData.jobOpenings.toLocaleString()}</span>
+                  </div>
+                  <div className="flex justify-between items-center bg-white/50 dark:bg-black/20 p-3 rounded-lg">
+                    <span className="text-sm font-medium text-muted-foreground">Growth Rate</span>
+                    <span className="font-bold text-emerald-600">{rec.marketData.growthRate}</span>
+                  </div>
+                  <div className="flex justify-between items-center bg-white/50 dark:bg-black/20 p-3 rounded-lg">
+                    <span className="text-sm font-medium text-muted-foreground">LinkedIn Jobs</span>
+                    <span className="font-bold text-blue-600">{rec.marketData.linkedinJobsCount}</span>
+                  </div>
+                  <div className="flex justify-between items-center bg-white/50 dark:bg-black/20 p-3 rounded-lg">
+                    <span className="text-sm font-medium text-muted-foreground">Naukri Jobs</span>
+                    <span className="font-bold text-orange-600">{rec.marketData.naukriJobsCount}</span>
+                  </div>
+                  {rec.marketData.industryInsights && (
+                    <div className="mt-4 p-3 bg-white/70 dark:bg-black/30 rounded-lg border border-border/50">
+                      <p className="text-sm text-muted-foreground italic">{rec.marketData.industryInsights}</p>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
           </motion.div>
 
           <motion.div initial={{opacity:0, y:20}} animate={{opacity:1, y:0}} transition={{delay: 0.2}} className="space-y-6">

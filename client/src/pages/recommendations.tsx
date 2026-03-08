@@ -80,6 +80,17 @@ export default function Recommendations() {
                     <TrendingUp className="h-4 w-4 mr-2 text-blue-500" />
                     Demand: {rec.marketDemand}
                   </div>
+                  {rec.marketData && (
+                    <>
+                      <div className="flex items-center text-sm font-medium text-foreground pt-2 border-t border-border/30">
+                        <Briefcase className="h-4 w-4 mr-2 text-purple-500" />
+                        {rec.marketData.jobOpenings.toLocaleString()} openings
+                      </div>
+                      <div className="text-xs text-muted-foreground">
+                        📊 {rec.marketData.linkedinJobsCount} LinkedIn | 💼 {rec.marketData.naukriJobsCount} Naukri
+                      </div>
+                    </>
+                  )}
                 </div>
 
                 <Button className="w-full rounded-xl shadow-md group-hover:shadow-primary/20 transition-all" asChild>

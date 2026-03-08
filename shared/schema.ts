@@ -49,11 +49,28 @@ export const roadmaps = pgTable("roadmaps", {
   createdAt: timestamp("created_at").defaultNow(),
 });
 
+export const jobMarketData = pgTable("job_market_data", {
+  id: serial("id").primaryKey(),
+  careerName: text("career_name").notNull().unique(),
+  jobOpenings: integer("job_openings").notNull(),
+  avgSalary: integer("avg_salary").notNull(),
+  growthRate: text("growth_rate").notNull(), // e.g., "15% YoY"
+  demandLevel: text("demand_level").notNull(), // High, Medium, Low
+  topCompanies: text("top_companies").array().notNull(),
+  requiredSkills: text("required_skills").array().notNull(),
+  commonLocations: text("common_locations").array().notNull(),
+  linkedinJobsCount: integer("linkedin_jobs_count").notNull(),
+  naukriJobsCount: integer("naukri_jobs_count").notNull(),
+  industryInsights: text("industry_insights"),
+  lastUpdated: timestamp("last_updated").defaultNow(),
+});
+
 export const insertUserSchema = createInsertSchema(users).omit({ id: true, createdAt: true });
 export const insertAssessmentSchema = createInsertSchema(assessments).omit({ id: true, createdAt: true });
 export const insertRecommendationSchema = createInsertSchema(recommendations).omit({ id: true, createdAt: true });
 export const insertUserSkillSchema = createInsertSchema(userSkills).omit({ id: true });
 export const insertRoadmapSchema = createInsertSchema(roadmaps).omit({ id: true, createdAt: true });
+export const insertJobMarketDataSchema = createInsertSchema(jobMarketData).omit({ id: true, lastUpdated: true });
 
 export type User = typeof users.$inferSelect;
 export type InsertUser = z.infer<typeof insertUserSchema>;
@@ -69,6 +86,9 @@ export type InsertUserSkill = z.infer<typeof insertUserSkillSchema>;
 
 export type Roadmap = typeof roadmaps.$inferSelect;
 export type InsertRoadmap = z.infer<typeof insertRoadmapSchema>;
+
+export type JobMarketData = typeof jobMarketData.$inferSelect;
+export type InsertJobMarketData = z.infer<typeof insertJobMarketDataSchema>;
 
 export type RoadmapStep = {
   stepNumber: number;
