@@ -16,7 +16,7 @@ export default function LandingPage() {
           <div className="bg-primary p-2 rounded-xl shadow-lg shadow-primary/25">
             <Compass className="h-6 w-6 text-primary-foreground" />
           </div>
-          <span className="font-display font-bold text-xl tracking-tight">CareerCompass AI</span>
+          <span className="font-display font-bold text-xl tracking-tight">Productivity Hub</span>
         </div>
         <div className="flex gap-4">
           <Button variant="ghost" asChild className="rounded-xl font-medium text-muted-foreground hover:text-foreground">
@@ -102,6 +102,14 @@ export default function LandingPage() {
           ))}
         </div>
       </main>
+
+      <footer className="relative z-10 border-t border-border/60">
+        <div className="mx-auto flex h-16 max-w-7xl items-center px-6">
+          <p className="text-sm text-muted-foreground">
+            © {new Date().getFullYear()} Productivity Hub. All rights reserved.
+          </p>
+        </div>
+      </footer>
     </div>
   );
 }

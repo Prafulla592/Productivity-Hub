@@ -1,4 +1,4 @@
-import { db } from "./db";
+import { db } from "./config/database";
 import { jobMarketData } from "@shared/schema";
 import { eq } from "drizzle-orm";
 import { openai } from "./openai";

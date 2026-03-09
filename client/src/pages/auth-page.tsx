@@ -41,7 +41,7 @@ export default function AuthPage({ isLogin = true }: { isLogin?: boolean }) {
         <div className="absolute top-8 left-8 flex items-center gap-2">
           <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
             <Compass className="h-6 w-6 text-primary" />
-            <span className="font-display font-bold text-xl">CareerCompass</span>
+            <span className="font-display font-bold text-xl">Productivity Hub</span>
           </Link>
         </div>
 
@@ -187,7 +187,7 @@ export default function AuthPage({ isLogin = true }: { isLogin?: boolean }) {
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}>
             <h2 className="text-4xl font-display font-bold mb-4 leading-tight">Your future is waiting to be built.</h2>
             <p className="text-lg text-white/80 max-w-lg">
-              Join thousands of professionals using CareerCompass to map their journey into the tech industry.
+              Join thousands of professionals using Productivity Hub to map their journey into the tech industry.
             </p>
           </motion.div>
         </div>

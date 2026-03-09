@@ -1,4 +1,4 @@
-import { db } from "./db";
+import { db, pool } from "./config/database";
 import {
   users, assessments, recommendations, userSkills, roadmaps,
   type User, type InsertUser, type Assessment, type InsertAssessment,
@@ -8,7 +8,6 @@ import {
 import { eq, and } from "drizzle-orm";
 import session from "express-session";
 import connectPg from "connect-pg-simple";
-import { pool } from "./db";
 
 const PostgresStore = connectPg(session);
 

@@ -1,4 +1,5 @@
-import { Switch, Route, Redirect } from "wouter";
+import { useEffect } from "react";
+import { Switch, Route, useLocation } from "wouter";
 import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
@@ -14,7 +15,26 @@ import CareerDetail from "@/pages/career-detail";
 import Skills from "@/pages/skills";
 import Roadmaps from "@/pages/roadmaps";
 
+function getRouteTitle(pathname: string) {
+  if (pathname === "/") return "Productivity Hub";
+  if (pathname === "/login") return "Sign In";
+  if (pathname === "/signup") return "Create Account";
+  if (pathname.startsWith("/dashboard")) return "Dashboard";
+  if (pathname.startsWith("/assessment")) return "Assessment";
+  if (pathname.startsWith("/recommendations")) return "Recommendations";
+  if (pathname.startsWith("/skills")) return "My Skills";
+  if (pathname.startsWith("/roadmaps")) return "Roadmaps";
+  return "Productivity Hub";
+}
+
 function Router() {
+  const [location] = useLocation();
+
+  useEffect(() => {
+    const pageTitle = getRouteTitle(location);
+    document.title = pageTitle === "Productivity Hub" ? pageTitle : `${pageTitle} | Productivity Hub`;
+  }, [location]);
+
   return (
     <Switch>
       <Route path="/" component={LandingPage} />

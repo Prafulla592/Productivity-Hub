@@ -59,7 +59,7 @@ export function useAuth() {
     },
     onSuccess: (data) => {
       queryClient.setQueryData([api.auth.me.path], data);
-      toast({ title: "Account created!", description: "Welcome to CareerCompass AI." });
+      toast({ title: "Account created!", description: "Welcome to Productivity Hub." });
       setLocation("/dashboard");
     },
     onError: (error: Error) => {

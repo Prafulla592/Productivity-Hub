@@ -1,4 +1,4 @@
-You are an expert full-stack developer. Build a production-ready MVP web application called **CareerCompass AI**.
+You are an expert full-stack developer. Build a production-ready MVP web application called **Productivity Hub**.
 
 The application helps students discover the best career path using AI analysis of their interests, skills, and market trends.
 
@@ -8,7 +8,7 @@ The goal is to guide students toward careers with strong demand and good salary 
 
 PRODUCT OVERVIEW
 
-CareerCompass AI is an AI-powered career guidance platform that helps students:
+Productivity Hub is an AI-powered career guidance platform that helps students:
 
 • Discover suitable career paths
 • Understand salary expectations
