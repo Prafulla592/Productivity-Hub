@@ -48,7 +48,7 @@ export function registerRecommendationRoutes(app: Express) {
       `;
 
       const response = await openai.chat.completions.create({
-        model: "gpt-5.1",
+        model: "gpt-4o-mini",
         messages: [{ role: "user", content: prompt }],
         response_format: { type: "json_object" },
       });
