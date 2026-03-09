@@ -1,113 +1,270 @@
 import { Link } from "wouter";
 import { motion } from "framer-motion";
-import { Compass, Target, Map, Brain, ArrowRight } from "lucide-react";
+import {
+  ArrowRight,
+  Check,
+  Compass,
+  LineChart,
+  ShieldCheck,
+  Sparkles,
+  Target,
+  Workflow,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
+
+const features = [
+  {
+    icon: Target,
+    title: "AI Skill Gap Analysis",
+    description:
+      "Compare your current profile with target roles and instantly see what to learn next.",
+  },
+  {
+    icon: Workflow,
+    title: "Personalized Roadmaps",
+    description:
+      "Get practical, step-by-step learning plans with clear milestones and priorities.",
+  },
+  {
+    icon: LineChart,
+    title: "Progress Tracking",
+    description:
+      "Track growth over time and adjust your plan based on changing goals and market demand.",
+  },
+  {
+    icon: ShieldCheck,
+    title: "Secure Workspace",
+    description:
+      "Manage assessments, recommendations, and planning data in one protected dashboard.",
+  },
+];
+
+const steps = [
+  {
+    title: "Complete your profile",
+    description: "Share your interests, strengths, and goals through a guided assessment.",
+  },
+  {
+    title: "Receive career matches",
+    description: "AI recommends roles with demand, salary range, and fit insights.",
+  },
+  {
+    title: "Execute your roadmap",
+    description: "Follow a weekly action plan and keep improving with measurable progress.",
+  },
+];
+
+const testimonials = [
+  {
+    quote:
+      "We reduced onboarding time for early-career hires by 32% with role-based learning plans.",
+    name: "Priya Nair",
+    role: "Talent Lead, Orbit Labs",
+  },
+  {
+    quote:
+      "This gave our team one source of truth for career development and upskilling priorities.",
+    name: "Michael Chen",
+    role: "Engineering Manager, NorthGrid",
+  },
+  {
+    quote:
+      "I went from confusion to a clear transition path in one week. The roadmap was actionable.",
+    name: "Avery Brooks",
+    role: "Career Switcher",
+  },
+];
+
+const plans = [
+  {
+    name: "Free",
+    price: "$0",
+    period: "/month",
+    cta: "Start Free",
+    highlight: false,
+    items: ["Basic assessment", "3 career matches", "1 active roadmap"],
+  },
+  {
+    name: "Pro",
+    price: "$19",
+    period: "/month",
+    cta: "Get Started Free",
+    highlight: true,
+    items: ["Unlimited assessments", "Unlimited matches", "Priority AI generation"],
+  },
+  {
+    name: "Team",
+    price: "$79",
+    period: "/month",
+    cta: "Contact Sales",
+    highlight: false,
+    items: ["Up to 10 members", "Shared planning workspace", "Advanced usage insights"],
+  },
+];
 
 export default function LandingPage() {
   return (
-    <div className="min-h-screen bg-background overflow-hidden relative selection:bg-primary/20">
-      {/* Decorative Background Elements */}
-      <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-primary/10 blur-[120px] pointer-events-none" />
-      <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] rounded-full bg-accent/10 blur-[120px] pointer-events-none" />
+    <div className="min-h-screen bg-background text-foreground">
+      <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_20%_10%,hsl(var(--primary)/0.15),transparent_35%),radial-gradient(circle_at_80%_0%,hsl(var(--accent)/0.18),transparent_40%)]" />
 
-      {/* Nav */}
-      <nav className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between relative z-10">
+      <nav className="mx-auto flex h-20 w-full max-w-7xl items-center justify-between px-6">
         <div className="flex items-center gap-2">
-          <div className="bg-primary p-2 rounded-xl shadow-lg shadow-primary/25">
-            <Compass className="h-6 w-6 text-primary-foreground" />
+          <div className="rounded-xl bg-primary p-2 text-primary-foreground shadow-lg shadow-primary/25">
+            <Compass className="h-5 w-5" />
           </div>
-          <span className="font-display font-bold text-xl tracking-tight">Productivity Hub</span>
+          <span className="font-display text-xl font-bold tracking-tight">Productivity Hub</span>
         </div>
-        <div className="flex gap-4">
-          <Button variant="ghost" asChild className="rounded-xl font-medium text-muted-foreground hover:text-foreground">
-            <Link href="/login">Sign In</Link>
+        <div className="flex items-center gap-3">
+          <Button variant="ghost" asChild>
+            <Link href="/login">Login</Link>
           </Button>
-          <Button asChild className="rounded-xl font-semibold shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/30 transition-all hover:-translate-y-0.5">
-            <Link href="/signup">Get Started</Link>
+          <Button asChild>
+            <Link href="/signup">Sign up</Link>
           </Button>
         </div>
       </nav>
 
-      <main className="max-w-7xl mx-auto px-6 pt-20 pb-32 relative z-10">
-        <div className="text-center max-w-3xl mx-auto mt-12 md:mt-24">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-          >
-            <span className="inline-block py-1.5 px-4 rounded-full bg-primary/10 text-primary font-medium text-sm mb-6 border border-primary/20">
-              Your AI-Powered Career Coach
-            </span>
-            <h1 className="text-5xl md:text-7xl font-bold tracking-tight text-foreground mb-6 leading-tight">
-              Navigate Your Career with <span className="text-gradient">Precision</span>
-            </h1>
-            <p className="text-lg md:text-xl text-muted-foreground mb-10 leading-relaxed max-w-2xl mx-auto">
-              Stop guessing. Let AI analyze your skills, recommend ideal career paths, and generate step-by-step learning roadmaps tailored just for you.
+      <main className="mx-auto w-full max-w-7xl px-6 pb-20 pt-10 md:pt-16">
+        <section className="grid items-center gap-10 lg:grid-cols-2">
+          <div>
+            <p className="mb-4 inline-flex items-center gap-2 rounded-full border border-primary/25 bg-primary/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.14em] text-primary">
+              <Sparkles className="h-4 w-4" />
+              Career Intelligence Platform
             </p>
-            
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" className="rounded-xl h-14 px-8 text-base font-semibold shadow-xl shadow-primary/30 hover:-translate-y-1 hover:shadow-2xl hover:shadow-primary/40 transition-all group" asChild>
+            <h1 className="text-4xl font-bold leading-tight md:text-6xl">
+              Build a faster path from skills to outcomes.
+            </h1>
+            <p className="mt-5 max-w-xl text-lg text-muted-foreground">
+              Productivity Hub helps individuals and teams assess strengths, discover the right
+              opportunities, and execute clear learning roadmaps with confidence.
+            </p>
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+              <Button size="lg" className="h-12 px-7" asChild>
                 <Link href="/signup">
-                  Start Your Journey <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                  Get Started Free
+                  <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
               </Button>
-              <Button size="lg" variant="outline" className="rounded-xl h-14 px-8 text-base font-semibold border-2 hover:bg-secondary/50 transition-all" asChild>
-                <Link href="/login">Explore Demo</Link>
+              <Button size="lg" variant="outline" className="h-12 px-7" asChild>
+                <Link href="/login">Login</Link>
               </Button>
             </div>
-          </motion.div>
-        </div>
+          </div>
 
-        {/* Feature Grid */}
-        <div className="mt-32 grid grid-cols-1 md:grid-cols-3 gap-8">
-          {[
-            {
-              icon: Brain,
-              title: "Smart Assessment",
-              desc: "Deep-dive analysis of your current abilities, preferences, and background.",
-              color: "text-blue-500",
-              bg: "bg-blue-500/10",
-              border: "border-blue-500/20"
-            },
-            {
-              icon: Target,
-              title: "Gap Analysis",
-              desc: "Identify exactly what skills you lack to land your dream role in tech.",
-              color: "text-cyan-500",
-              bg: "bg-cyan-500/10",
-              border: "border-cyan-500/20"
-            },
-            {
-              icon: Map,
-              title: "Custom Roadmaps",
-              desc: "Step-by-step learning plans generated by AI to guide your transition.",
-              color: "text-indigo-500",
-              bg: "bg-indigo-500/10",
-              border: "border-indigo-500/20"
-            }
-          ].map((feature, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 + i * 0.1 }}
-              className={`p-8 rounded-3xl glass-card border-2 hover:-translate-y-1 transition-all duration-300 ${feature.border}`}
-            >
-              <div className={`w-14 h-14 rounded-2xl ${feature.bg} flex items-center justify-center mb-6`}>
-                <feature.icon className={`h-7 w-7 ${feature.color}`} />
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.35 }}
+            className="rounded-3xl border border-border/80 bg-card p-6 shadow-2xl shadow-black/5"
+          >
+            <div className="mb-5 flex items-center justify-between">
+              <p className="font-semibold">Weekly Momentum</p>
+              <span className="rounded-full bg-green-500/10 px-2.5 py-1 text-xs font-semibold text-green-600">
+                +18%
+              </span>
+            </div>
+            <div className="space-y-3">
+              {["Assessment completed", "Role match generated", "Roadmap updated"].map((item) => (
+                <div
+                  key={item}
+                  className="flex items-center justify-between rounded-xl border border-border bg-background px-4 py-3"
+                >
+                  <span className="text-sm font-medium">{item}</span>
+                  <Check className="h-4 w-4 text-primary" />
+                </div>
+              ))}
+            </div>
+          </motion.div>
+        </section>
+
+        <section className="mt-24">
+          <h2 className="text-center text-3xl font-bold md:text-4xl">Features</h2>
+          <p className="mx-auto mt-3 max-w-2xl text-center text-muted-foreground">
+            Built for practical career growth, not generic advice.
+          </p>
+          <div className="mt-10 grid gap-5 sm:grid-cols-2">
+            {features.map((feature) => (
+              <div key={feature.title} className="rounded-2xl border bg-card p-6">
+                <feature.icon className="mb-4 h-6 w-6 text-primary" />
+                <h3 className="text-xl font-semibold">{feature.title}</h3>
+                <p className="mt-2 text-sm text-muted-foreground">{feature.description}</p>
               </div>
-              <h3 className="text-xl font-bold text-foreground mb-3">{feature.title}</h3>
-              <p className="text-muted-foreground leading-relaxed">{feature.desc}</p>
-            </motion.div>
-          ))}
-        </div>
+            ))}
+          </div>
+        </section>
+
+        <section className="mt-24">
+          <h2 className="text-center text-3xl font-bold md:text-4xl">How It Works</h2>
+          <div className="mt-10 grid gap-5 md:grid-cols-3">
+            {steps.map((step, i) => (
+              <div key={step.title} className="rounded-2xl border bg-card p-6">
+                <p className="text-sm font-semibold text-primary">Step {i + 1}</p>
+                <h3 className="mt-2 text-xl font-semibold">{step.title}</h3>
+                <p className="mt-2 text-sm text-muted-foreground">{step.description}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section className="mt-24">
+          <h2 className="text-center text-3xl font-bold md:text-4xl">Trusted by Growing Teams</h2>
+          <div className="mt-10 grid gap-5 md:grid-cols-3">
+            {testimonials.map((item) => (
+              <figure key={item.name} className="rounded-2xl border bg-card p-6">
+                <blockquote className="text-sm leading-6 text-muted-foreground">{item.quote}</blockquote>
+                <figcaption className="mt-5">
+                  <p className="font-semibold">{item.name}</p>
+                  <p className="text-xs text-muted-foreground">{item.role}</p>
+                </figcaption>
+              </figure>
+            ))}
+          </div>
+        </section>
+
+        <section className="mt-24" id="pricing">
+          <h2 className="text-center text-3xl font-bold md:text-4xl">Pricing</h2>
+          <p className="mx-auto mt-3 max-w-2xl text-center text-muted-foreground">
+            Start free and upgrade when you need deeper automation.
+          </p>
+          <div className="mt-10 grid gap-5 md:grid-cols-3">
+            {plans.map((plan) => (
+              <div
+                key={plan.name}
+                className={`rounded-2xl border bg-card p-6 ${
+                  plan.highlight ? "border-primary shadow-xl shadow-primary/10" : ""
+                }`}
+              >
+                <p className="font-semibold">{plan.name}</p>
+                <div className="mt-3 flex items-end gap-1">
+                  <span className="text-4xl font-bold">{plan.price}</span>
+                  <span className="pb-1 text-sm text-muted-foreground">{plan.period}</span>
+                </div>
+                <ul className="mt-6 space-y-2">
+                  {plan.items.map((item) => (
+                    <li key={item} className="flex items-center gap-2 text-sm text-muted-foreground">
+                      <Check className="h-4 w-4 text-primary" />
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+                <Button className="mt-6 w-full" variant={plan.highlight ? "default" : "outline"} asChild>
+                  <Link href={plan.name === "Team" ? "/login" : "/signup"}>{plan.cta}</Link>
+                </Button>
+              </div>
+            ))}
+          </div>
+        </section>
       </main>
 
-      <footer className="relative z-10 border-t border-border/60">
-        <div className="mx-auto flex h-16 max-w-7xl items-center px-6">
-          <p className="text-sm text-muted-foreground">
-            © {new Date().getFullYear()} Productivity Hub. All rights reserved.
-          </p>
+      <footer className="border-t border-border/70 bg-card/40">
+        <div className="mx-auto grid w-full max-w-7xl gap-5 px-6 py-8 text-sm text-muted-foreground md:grid-cols-2">
+          <p>(c) {new Date().getFullYear()} Productivity Hub. All rights reserved.</p>
+          <div className="flex flex-wrap items-center gap-5 md:justify-end">
+            <Link href="/">Home</Link>
+            <Link href="/login">Login</Link>
+            <Link href="/signup">Sign up</Link>
+            <a href="#pricing">Pricing</a>
+          </div>
         </div>
       </footer>
     </div>

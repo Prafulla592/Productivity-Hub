@@ -8,6 +8,9 @@ import NotFound from "@/pages/not-found";
 
 import LandingPage from "@/pages/landing";
 import AuthPage from "@/pages/auth-page";
+import VerifyEmailPage from "@/pages/verify-email";
+import ForgotPasswordPage from "@/pages/forgot-password";
+import ResetPasswordPage from "@/pages/reset-password";
 import Dashboard from "@/pages/dashboard";
 import Assessment from "@/pages/assessment";
 import Recommendations from "@/pages/recommendations";
@@ -19,6 +22,9 @@ function getRouteTitle(pathname: string) {
   if (pathname === "/") return "Productivity Hub";
   if (pathname === "/login") return "Sign In";
   if (pathname === "/signup") return "Create Account";
+  if (pathname === "/verify-email") return "Verify Email";
+  if (pathname === "/forgot-password") return "Forgot Password";
+  if (pathname === "/reset-password") return "Reset Password";
   if (pathname.startsWith("/dashboard")) return "Dashboard";
   if (pathname.startsWith("/assessment")) return "Assessment";
   if (pathname.startsWith("/recommendations")) return "Recommendations";
@@ -44,6 +50,9 @@ function Router() {
       <Route path="/signup">
         <AuthPage isLogin={false} />
       </Route>
+      <Route path="/verify-email" component={VerifyEmailPage} />
+      <Route path="/forgot-password" component={ForgotPasswordPage} />
+      <Route path="/reset-password" component={ResetPasswordPage} />
       <Route path="/dashboard" component={Dashboard} />
       <Route path="/assessment" component={Assessment} />
       <Route path="/recommendations" component={Recommendations} />

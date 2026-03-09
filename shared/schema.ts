@@ -1,4 +1,4 @@
-import { pgTable, text, serial, integer, timestamp, jsonb } from "drizzle-orm/pg-core";
+import { pgTable, text, serial, integer, timestamp, jsonb, boolean } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
@@ -7,6 +7,10 @@ export const users = pgTable("users", {
   name: text("name").notNull(),
   email: text("email").notNull().unique(),
   password: text("password").notNull(),
+  emailVerified: boolean("email_verified").notNull().default(false),
+  verificationToken: text("verification_token"),
+  resetPasswordToken: text("reset_password_token"),
+  resetPasswordExpires: timestamp("reset_password_expires"),
   educationLevel: text("education_level").notNull(),
   college: text("college"),
   city: text("city"),
@@ -65,7 +69,14 @@ export const jobMarketData = pgTable("job_market_data", {
   lastUpdated: timestamp("last_updated").defaultNow(),
 });
 
-export const insertUserSchema = createInsertSchema(users).omit({ id: true, createdAt: true });
+export const insertUserSchema = createInsertSchema(users).omit({
+  id: true,
+  createdAt: true,
+  emailVerified: true,
+  verificationToken: true,
+  resetPasswordToken: true,
+  resetPasswordExpires: true,
+});
 export const insertAssessmentSchema = createInsertSchema(assessments).omit({ id: true, createdAt: true });
 export const insertRecommendationSchema = createInsertSchema(recommendations).omit({ id: true, createdAt: true });
 export const insertUserSkillSchema = createInsertSchema(userSkills).omit({ id: true });
@@ -102,6 +113,15 @@ export const signupSchema = insertUserSchema;
 export const loginSchema = z.object({
   email: z.string().email(),
   password: z.string(),
+});
+
+export const forgotPasswordSchema = z.object({
+  email: z.string().email(),
+});
+
+export const resetPasswordSchema = z.object({
+  token: z.string().min(1),
+  password: z.string().min(8),
 });
 
 export const submitAssessmentSchema = z.object({

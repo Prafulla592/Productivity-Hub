@@ -30,7 +30,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
   }
 
   if (!user) {
-    window.location.href = "/login";
+    window.location.href = "/";
     return null;
   }
 

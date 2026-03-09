@@ -5,7 +5,7 @@ import {
   type Recommendation, type InsertRecommendation, type UserSkill, type InsertUserSkill,
   type Roadmap, type InsertRoadmap
 } from "@shared/schema";
-import { eq, and } from "drizzle-orm";
+import { eq, and, gt } from "drizzle-orm";
 import session from "express-session";
 import connectPg from "connect-pg-simple";
 
@@ -15,6 +15,13 @@ export interface IStorage {
   getUser(id: number): Promise<User | undefined>;
   getUserByEmail(email: string): Promise<User | undefined>;
   createUser(user: InsertUser): Promise<User>;
+  getUserByVerificationToken(token: string): Promise<User | undefined>;
+  markEmailAsVerified(userId: number): Promise<void>;
+  setVerificationToken(userId: number, token: string): Promise<void>;
+  setResetPasswordToken(userId: number, token: string, expiresAt: Date): Promise<void>;
+  getUserByValidResetToken(token: string): Promise<User | undefined>;
+  updateUserPassword(userId: number, password: string): Promise<void>;
+  clearResetPasswordToken(userId: number): Promise<void>;
 
   getAssessments(userId: number): Promise<Assessment[]>;
   createAssessment(assessment: InsertAssessment): Promise<Assessment>;
@@ -56,6 +63,54 @@ export class DatabaseStorage implements IStorage {
   async createUser(insertUser: InsertUser): Promise<User> {
     const [user] = await db.insert(users).values(insertUser).returning();
     return user;
+  }
+
+  async getUserByVerificationToken(token: string): Promise<User | undefined> {
+    const [user] = await db.select().from(users).where(eq(users.verificationToken, token));
+    return user;
+  }
+
+  async markEmailAsVerified(userId: number): Promise<void> {
+    await db
+      .update(users)
+      .set({ emailVerified: true, verificationToken: null })
+      .where(eq(users.id, userId));
+  }
+
+  async setVerificationToken(userId: number, token: string): Promise<void> {
+    await db.update(users).set({ verificationToken: token }).where(eq(users.id, userId));
+  }
+
+  async setResetPasswordToken(userId: number, token: string, expiresAt: Date): Promise<void> {
+    await db
+      .update(users)
+      .set({ resetPasswordToken: token, resetPasswordExpires: expiresAt })
+      .where(eq(users.id, userId));
+  }
+
+  async getUserByValidResetToken(token: string): Promise<User | undefined> {
+    const now = new Date();
+    const [user] = await db
+      .select()
+      .from(users)
+      .where(
+        and(
+          eq(users.resetPasswordToken, token),
+          gt(users.resetPasswordExpires, now),
+        ),
+      );
+    return user;
+  }
+
+  async updateUserPassword(userId: number, password: string): Promise<void> {
+    await db.update(users).set({ password }).where(eq(users.id, userId));
+  }
+
+  async clearResetPasswordToken(userId: number): Promise<void> {
+    await db
+      .update(users)
+      .set({ resetPasswordToken: null, resetPasswordExpires: null })
+      .where(eq(users.id, userId));
   }
 
   async getAssessments(userId: number): Promise<Assessment[]> {

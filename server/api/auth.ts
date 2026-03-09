@@ -1,9 +1,9 @@
 import type { Express } from "express";
 import { z } from "zod";
-import { promisify } from "util";
-import { randomBytes, scrypt } from "crypto";
 import { api } from "@shared/routes";
 import { storage } from "../storage";
+import { generateToken, hashPassword, hashToken } from "../auth-utils";
+import { sendPasswordResetEmail, sendVerificationEmail } from "../email";
 
 export function registerAuthRoutes(app: Express) {
   app.post(api.auth.signup.path, async (req, res, next) => {
@@ -14,15 +14,16 @@ export function registerAuthRoutes(app: Express) {
         return res.status(400).json({ message: "Email already exists" });
       }
 
-      const scryptAsync = promisify(scrypt);
-      const salt = randomBytes(16).toString("hex");
-      const buf = (await scryptAsync(input.password, salt, 64)) as Buffer;
-      const hashedPassword = `${buf.toString("hex")}.${salt}`;
+      const hashedPassword = await hashPassword(input.password);
+      const verificationToken = generateToken();
+      const verificationTokenHash = hashToken(verificationToken);
 
       const user = await storage.createUser({ ...input, password: hashedPassword });
-      req.login(user, (err) => {
-        if (err) return next(err);
-        return res.status(201).json(user);
+      await storage.setVerificationToken(user.id, verificationTokenHash);
+      await sendVerificationEmail(user.email, verificationToken);
+
+      return res.status(201).json({
+        message: "Account created. Check your email to verify your account before logging in.",
       });
     } catch (err) {
       if (err instanceof z.ZodError) {
@@ -58,5 +59,75 @@ export function registerAuthRoutes(app: Express) {
       return res.status(401).json({ message: "Not authenticated" });
     }
     return res.json(req.user);
+  });
+
+  app.get(api.auth.verifyEmail.path, async (req, res, next) => {
+    try {
+      const query = z
+        .object({ token: z.string().min(1, "Verification token is required") })
+        .parse(req.query);
+
+      const tokenHash = hashToken(query.token);
+      const user = await storage.getUserByVerificationToken(tokenHash);
+      if (!user) {
+        return res.status(400).json({ message: "Invalid verification token" });
+      }
+
+      await storage.markEmailAsVerified(user.id);
+      return res.json({ message: "Email verified successfully. You can now sign in." });
+    } catch (err) {
+      if (err instanceof z.ZodError) {
+        return res.status(400).json({ message: err.errors[0].message });
+      }
+      return next(err);
+    }
+  });
+
+  app.post(api.auth.forgotPassword.path, async (req, res, next) => {
+    try {
+      const input = api.auth.forgotPassword.input.parse(req.body);
+      const user = await storage.getUserByEmail(input.email);
+
+      if (user) {
+        const resetToken = generateToken();
+        const resetTokenHash = hashToken(resetToken);
+        const expiresAt = new Date(Date.now() + 60 * 60 * 1000);
+
+        await storage.setResetPasswordToken(user.id, resetTokenHash, expiresAt);
+        await sendPasswordResetEmail(user.email, resetToken);
+      }
+
+      return res.json({
+        message: "If an account exists for that email, a password reset link has been sent.",
+      });
+    } catch (err) {
+      if (err instanceof z.ZodError) {
+        return res.status(400).json({ message: err.errors[0].message });
+      }
+      return next(err);
+    }
+  });
+
+  app.post(api.auth.resetPassword.path, async (req, res, next) => {
+    try {
+      const input = api.auth.resetPassword.input.parse(req.body);
+      const tokenHash = hashToken(input.token);
+      const user = await storage.getUserByValidResetToken(tokenHash);
+
+      if (!user) {
+        return res.status(400).json({ message: "Invalid or expired reset token" });
+      }
+
+      const newHashedPassword = await hashPassword(input.password);
+      await storage.updateUserPassword(user.id, newHashedPassword);
+      await storage.clearResetPasswordToken(user.id);
+
+      return res.json({ message: "Password updated successfully. You can now sign in." });
+    } catch (err) {
+      if (err instanceof z.ZodError) {
+        return res.status(400).json({ message: err.errors[0].message });
+      }
+      return next(err);
+    }
   });
 }

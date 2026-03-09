@@ -57,10 +57,13 @@ export function useAuth() {
       }
       return res.json();
     },
-    onSuccess: (data) => {
-      queryClient.setQueryData([api.auth.me.path], data);
-      toast({ title: "Account created!", description: "Welcome to Productivity Hub." });
-      setLocation("/dashboard");
+    onSuccess: () => {
+      queryClient.setQueryData([api.auth.me.path], null);
+      toast({
+        title: "Account created!",
+        description: "Please verify your email before signing in.",
+      });
+      setLocation("/login");
     },
     onError: (error: Error) => {
       toast({ title: "Signup failed", description: error.message, variant: "destructive" });
@@ -82,6 +85,50 @@ export function useAuth() {
     },
   });
 
+  const verifyEmailMutation = useMutation({
+    mutationFn: async (token: string) => {
+      const query = new URLSearchParams({ token }).toString();
+      const res = await fetch(`${api.auth.verifyEmail.path}?${query}`, {
+        method: api.auth.verifyEmail.method,
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.message || "Email verification failed");
+      }
+      return data;
+    },
+  });
+
+  const forgotPasswordMutation = useMutation({
+    mutationFn: async (email: string) => {
+      const res = await fetch(api.auth.forgotPassword.path, {
+        method: api.auth.forgotPassword.method,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.message || "Failed to request password reset");
+      }
+      return data;
+    },
+  });
+
+  const resetPasswordMutation = useMutation({
+    mutationFn: async (input: { token: string; password: string }) => {
+      const res = await fetch(api.auth.resetPassword.path, {
+        method: api.auth.resetPassword.method,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(input),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.message || "Failed to reset password");
+      }
+      return data;
+    },
+  });
+
   return {
     user,
     isLoading,
@@ -89,6 +136,12 @@ export function useAuth() {
     isLoggingIn: loginMutation.isPending,
     signup: signupMutation.mutate,
     isSigningUp: signupMutation.isPending,
+    verifyEmail: verifyEmailMutation.mutateAsync,
+    isVerifyingEmail: verifyEmailMutation.isPending,
+    forgotPassword: forgotPasswordMutation.mutateAsync,
+    isRequestingPasswordReset: forgotPasswordMutation.isPending,
+    resetPassword: resetPasswordMutation.mutateAsync,
+    isResettingPassword: resetPasswordMutation.isPending,
     logout: logoutMutation.mutate,
   };
 }

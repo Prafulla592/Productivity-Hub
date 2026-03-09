@@ -10,12 +10,10 @@ import { motion } from "framer-motion";
 
 export default function AuthPage({ isLogin = true }: { isLogin?: boolean }) {
   const { login, signup, isLoggingIn, isSigningUp } = useAuth();
-  
-  // Login State
+
   const [loginEmail, setLoginEmail] = useState("");
   const [loginPass, setLoginPass] = useState("");
 
-  // Signup State
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -33,10 +31,8 @@ export default function AuthPage({ isLogin = true }: { isLogin?: boolean }) {
     signup({ name, email, password, educationLevel: eduLevel, college, city });
   };
 
-  {/* auth landing hero workspace clean desk laptop */}
   return (
     <div className="min-h-screen flex bg-background">
-      {/* Left Form Side */}
       <div className="w-full lg:w-1/2 flex items-center justify-center p-8 relative z-10">
         <div className="absolute top-8 left-8 flex items-center gap-2">
           <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
@@ -45,11 +41,7 @@ export default function AuthPage({ isLogin = true }: { isLogin?: boolean }) {
           </Link>
         </div>
 
-        <motion.div 
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          className="w-full max-w-md"
-        >
+        <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} className="w-full max-w-md">
           <Tabs defaultValue={isLogin ? "login" : "signup"} className="w-full">
             <TabsList className="grid w-full grid-cols-2 mb-8 bg-secondary/50 p-1 rounded-xl">
               <TabsTrigger value="login" className="rounded-lg">Sign In</TabsTrigger>
@@ -67,23 +59,34 @@ export default function AuthPage({ isLogin = true }: { isLogin?: boolean }) {
                   <Label htmlFor="login-email">Email</Label>
                   <div className="relative">
                     <Mail className="absolute left-3 top-3 h-5 w-5 text-muted-foreground" />
-                    <Input 
-                      id="login-email" type="email" placeholder="you@example.com" 
+                    <Input
+                      id="login-email"
+                      type="email"
+                      placeholder="you@example.com"
                       className="pl-10 h-12 rounded-xl bg-card border-2 border-border focus-visible:ring-primary/20"
-                      value={loginEmail} onChange={(e) => setLoginEmail(e.target.value)} required
+                      value={loginEmail}
+                      onChange={(e) => setLoginEmail(e.target.value)}
+                      required
                     />
                   </div>
                 </div>
                 <div className="space-y-2">
                   <div className="flex justify-between items-center">
                     <Label htmlFor="login-password">Password</Label>
+                    <Link href="/forgot-password" className="text-sm text-primary hover:underline">
+                      Forgot password?
+                    </Link>
                   </div>
                   <div className="relative">
                     <Lock className="absolute left-3 top-3 h-5 w-5 text-muted-foreground" />
-                    <Input 
-                      id="login-password" type="password" placeholder="••••••••" 
+                    <Input
+                      id="login-password"
+                      type="password"
+                      placeholder="Enter your password"
                       className="pl-10 h-12 rounded-xl bg-card border-2 border-border focus-visible:ring-primary/20"
-                      value={loginPass} onChange={(e) => setLoginPass(e.target.value)} required
+                      value={loginPass}
+                      onChange={(e) => setLoginPass(e.target.value)}
+                      required
                     />
                   </div>
                 </div>
@@ -104,10 +107,13 @@ export default function AuthPage({ isLogin = true }: { isLogin?: boolean }) {
                   <Label htmlFor="name">Full Name</Label>
                   <div className="relative">
                     <User className="absolute left-3 top-3 h-5 w-5 text-muted-foreground" />
-                    <Input 
-                      id="name" placeholder="Jane Doe" 
+                    <Input
+                      id="name"
+                      placeholder="Jane Doe"
                       className="pl-10 h-11 rounded-xl bg-card border-2"
-                      value={name} onChange={(e) => setName(e.target.value)} required
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      required
                     />
                   </div>
                 </div>
@@ -115,10 +121,14 @@ export default function AuthPage({ isLogin = true }: { isLogin?: boolean }) {
                   <Label htmlFor="email">Email</Label>
                   <div className="relative">
                     <Mail className="absolute left-3 top-3 h-5 w-5 text-muted-foreground" />
-                    <Input 
-                      id="email" type="email" placeholder="jane@example.com" 
+                    <Input
+                      id="email"
+                      type="email"
+                      placeholder="jane@example.com"
                       className="pl-10 h-11 rounded-xl bg-card border-2"
-                      value={email} onChange={(e) => setEmail(e.target.value)} required
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      required
                     />
                   </div>
                 </div>
@@ -126,10 +136,14 @@ export default function AuthPage({ isLogin = true }: { isLogin?: boolean }) {
                   <Label htmlFor="password">Password</Label>
                   <div className="relative">
                     <Lock className="absolute left-3 top-3 h-5 w-5 text-muted-foreground" />
-                    <Input 
-                      id="password" type="password" placeholder="••••••••" 
+                    <Input
+                      id="password"
+                      type="password"
+                      placeholder="Create a password"
                       className="pl-10 h-11 rounded-xl bg-card border-2"
-                      value={password} onChange={(e) => setPassword(e.target.value)} required
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      required
                     />
                   </div>
                 </div>
@@ -137,30 +151,37 @@ export default function AuthPage({ isLogin = true }: { isLogin?: boolean }) {
                   <Label htmlFor="edu">Current Education Level</Label>
                   <div className="relative">
                     <GraduationCap className="absolute left-3 top-3 h-5 w-5 text-muted-foreground" />
-                    <Input 
-                      id="edu" placeholder="e.g. Bachelor's in CS" 
+                    <Input
+                      id="edu"
+                      placeholder="e.g. Bachelor's in CS"
                       className="pl-10 h-11 rounded-xl bg-card border-2"
-                      value={eduLevel} onChange={(e) => setEduLevel(e.target.value)} required
+                      value={eduLevel}
+                      onChange={(e) => setEduLevel(e.target.value)}
+                      required
                     />
                   </div>
                 </div>
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <Label htmlFor="college">College/Uni (Optional)</Label>
-                    <Input 
-                      id="college" placeholder="University Name" 
+                    <Input
+                      id="college"
+                      placeholder="University Name"
                       className="h-11 rounded-xl bg-card border-2"
-                      value={college} onChange={(e) => setCollege(e.target.value)}
+                      value={college}
+                      onChange={(e) => setCollege(e.target.value)}
                     />
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="city">City (Optional)</Label>
                     <div className="relative">
                       <MapPin className="absolute left-3 top-3 h-5 w-5 text-muted-foreground" />
-                      <Input 
-                        id="city" placeholder="New York" 
+                      <Input
+                        id="city"
+                        placeholder="New York"
                         className="pl-10 h-11 rounded-xl bg-card border-2"
-                        value={city} onChange={(e) => setCity(e.target.value)}
+                        value={city}
+                        onChange={(e) => setCity(e.target.value)}
                       />
                     </div>
                   </div>
@@ -174,12 +195,11 @@ export default function AuthPage({ isLogin = true }: { isLogin?: boolean }) {
         </motion.div>
       </div>
 
-      {/* Right Image Side */}
       <div className="hidden lg:block w-1/2 relative bg-primary/5 border-l border-border/50 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-accent/20 z-0 mix-blend-multiply" />
-        <img 
-          src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1200&h=1600&fit=crop" 
-          alt="Team collaborating" 
+        <img
+          src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1200&h=1600&fit=crop"
+          alt="Team collaborating"
           className="absolute inset-0 w-full h-full object-cover opacity-80 z-[-1]"
         />
         <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px] z-0" />

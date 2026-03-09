@@ -5,7 +5,8 @@ import {
   insertRecommendationSchema, recommendations,
   insertUserSkillSchema, userSkills,
   insertRoadmapSchema, roadmaps,
-  signupSchema, loginSchema, submitAssessmentSchema, addSkillSchema, gapAnalysisRequestSchema, generateRoadmapRequestSchema
+  signupSchema, loginSchema, submitAssessmentSchema, addSkillSchema, gapAnalysisRequestSchema, generateRoadmapRequestSchema,
+  forgotPasswordSchema, resetPasswordSchema
 } from './schema';
 
 export const errorSchemas = {
@@ -31,7 +32,7 @@ export const api = {
       path: '/api/signup' as const,
       input: signupSchema,
       responses: {
-        201: z.custom<typeof users.$inferSelect>(),
+        201: z.object({ message: z.string() }),
         400: errorSchemas.validation,
       },
     },
@@ -57,6 +58,32 @@ export const api = {
       responses: {
         200: z.custom<typeof users.$inferSelect>(),
         401: errorSchemas.unauthorized,
+      }
+    },
+    verifyEmail: {
+      method: 'GET' as const,
+      path: '/api/auth/verify-email' as const,
+      responses: {
+        200: z.object({ message: z.string() }),
+        400: errorSchemas.validation,
+      }
+    },
+    forgotPassword: {
+      method: 'POST' as const,
+      path: '/api/auth/forgot-password' as const,
+      input: forgotPasswordSchema,
+      responses: {
+        200: z.object({ message: z.string() }),
+        400: errorSchemas.validation,
+      }
+    },
+    resetPassword: {
+      method: 'POST' as const,
+      path: '/api/auth/reset-password' as const,
+      input: resetPasswordSchema,
+      responses: {
+        200: z.object({ message: z.string() }),
+        400: errorSchemas.validation,
       }
     }
   },
